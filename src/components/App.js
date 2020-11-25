@@ -15,8 +15,7 @@ const App = () => (
      <BrowserRouter>
           <Switch>
               <Route path='/login' component={Login} />
-              <Route path='/food' component={Food} />
-              
+              <Route path='/food' component={Food} />             
               <Route component={NotFound} />
           </Switch>
       </BrowserRouter> 

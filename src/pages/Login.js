@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
+import NewUser from "../components/NewUser"
 
 function Login() {
     const history = useHistory();
@@ -8,12 +9,12 @@ function Login() {
     const [eleccion, setEleccion] = useState("");
     const [request, setRequest] = useState({});
     const [response, setResponse] = useState({});
+    const [newUser, setNewUser] = useState(false);
 
 
     //esta función completa el objeto del request para ser enviado al back
     function handleSeleccion(e) {
         setEleccion(e.target.value);
-
     }
 
     //Esta función me lleva a la pagina de food
@@ -29,11 +30,8 @@ function Login() {
             const consulta = await axios(
                 { method: 'POST', url: 'http://localhost:8080/usuario/login', data: request }
             );
-
             setResponse(consulta);
             goToFood();
-
-
         } catch (error) {
             console.log(error)
             setMensaje("Ingreso un usuario y/o clave invalido")
@@ -63,21 +61,25 @@ function Login() {
     return (
         <div>
             <h1 className="text-center bg-primary text-white">Welcome to login saludable-app</h1>
+            <div className="float-right">
+                <NewUser
+                    render={newUser} />
+            </div>
             <div className="container">
-                <div class="form-check">
+                <div className="form-check">
                     <h4 className="">Seleccione una opcion</h4>
-                    <input class="form-check-input" type="radio"
+                    <input className="form-check-input" type="radio"
                         name="exampleRadios" id="exampleRadios1" value="personal"
                         onClick={handleSeleccion} />
-                    <label class="form-check-label" for="exampleRadios1">
+                    <label className="form-check-label" for="exampleRadios1">
                         personal de salud
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio"
+                    <input className="form-check-input" type="radio"
                         name="exampleRadios" id="exampleRadios2" value="paciente"
                         onClick={handleSeleccion} />
-                    <label class="form-check-label" for="exampleRadios2">
+                    <label className="form-check-label" for="exampleRadios2">
                         paciente
                  </label>
                 </div>
@@ -87,9 +89,11 @@ function Login() {
                     <input type="password" id="contraseña" placeholder="ingrese password"
                         onChange={_onChange} /><br />
                     <label>{mensaje}</label><br />
+                    <button className=" btn btn-primary ml-5"
+                        onClick={_login}>Ingresar</button> <br />
 
-                    <button className=" btn btn-primary"
-                        onClick={_login}>Ingresar</button>
+                    <a className="text-center"
+                        onClick={() => setNewUser(!newUser)}>Crear nuevo usuario</a>
                 </div>
             </div>
         </div>
