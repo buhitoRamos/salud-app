@@ -21,7 +21,7 @@ if(logued){
     return(
         <div className="container">
             <form>
-                <h2>crear usuario</h2>
+                <h2 className="text-center">Cargar Comidas</h2>
                 <div className="form-group">
                     <label for="comidaDiaria">Tipo de comida diaria</label>
                     <select id="inputComidaDiaria" className="form-control">
