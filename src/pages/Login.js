@@ -17,14 +17,17 @@ function Login() {
         setEleccion(e.target.value);
     }
 
-    //Esta función me lleva a la pagina de food
+    //Esta función crea un token y lleva a la pagina de food
     function goToFood() {
+        let token = JSON.stringify("31576533");
+        localStorage.setItem('tokenOk', token);
         history.push({
             pathname: '/food',
             response: response,
         })
     }
 
+    //verifica si el usuario y clave pertenece a un usuario logueado.
     const consultaAPI = async () => {
         try {
             const consulta = await axios(
@@ -38,7 +41,7 @@ function Login() {
         }
     }
 
-
+    //Verifica tipo de logueo
     function _login(e) {
         e.preventDefault();
         if (eleccion === "paciente") {
@@ -59,15 +62,17 @@ function Login() {
     }
 
     return (
-        <div>
-            <h1 className="text-center bg-primary text-white">Welcome to login saludable-app</h1>
+        <div >
             <div className="float-right">
+                <br></br>
+                <br></br>
                 <NewUser
                     render={newUser} />
             </div>
-            <div className="container">
-                <div className="form-check">
-                    <h4 className="">Seleccione una opcion</h4>
+            <h1 className="text-center bg-primary text-white">Welcome to login saludable-app</h1>
+            <div className="container w-50 ml-5 float-left  " >
+                <h4 className="text-left">Seleccione una opcion</h4>
+                <div className="form-check ">
                     <input className="form-check-input" type="radio"
                         name="exampleRadios" id="exampleRadios1" value="personal"
                         onClick={handleSeleccion} />
@@ -87,11 +92,12 @@ function Login() {
                     <input type="text" id="usuario" placeholder="ingrese usuario"
                         onChange={_onChange} /><br />
                     <input type="password" id="contraseña" placeholder="ingrese password"
-                        onChange={_onChange} /><br />
-                    <label>{mensaje}</label><br />
+                        onChange={_onChange} />
+                    <div>
+                        <label>{mensaje}</label>
+                    </div>
                     <button className=" btn btn-primary ml-5"
                         onClick={_login}>Ingresar</button> <br />
-
                     <a className="text-center"
                         onClick={() => setNewUser(!newUser)}>Crear nuevo usuario</a>
                 </div>

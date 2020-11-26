@@ -1,7 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 
 function Food(){
+    const [logued, setLogued]= useState(false)
+
+
+useEffect(()=>{
+    let token = ""
+        let tk = localStorage.getItem('tokenOk')
+        token = JSON.stringify(tk)
+        var validaToken = token.includes("31576533")
+       setLogued(validaToken)
+        
+
+        
+
+})
+
+if(logued){
     return(
         <div className="container">
             <form>
@@ -23,6 +39,21 @@ function Food(){
 
 
     )
+
+} else{
+    return(
+<h1>not found</h1>
+    )
+    
+}
+
+
+    
+
+
+
+
+    
     
 
 
