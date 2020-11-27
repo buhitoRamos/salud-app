@@ -10,8 +10,6 @@ Estas dependencias ayudan a renderizar las diferentes paginas sin refrescar
 */
 
 const App = () => (
-  <div>
-     
      <BrowserRouter>
           <Switch>
               <Route path='/login' component={Login} />
@@ -19,6 +17,5 @@ const App = () => (
               <Route component={NotFound} />
           </Switch>
       </BrowserRouter> 
-  </div>
 )
 export default App

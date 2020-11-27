@@ -8,9 +8,7 @@ function Login() {
     const [mensaje, setMensaje] = useState("");
     const [eleccion, setEleccion] = useState("");
     const [request, setRequest] = useState({});
-    const [response, setResponse] = useState();
     const [newUser, setNewUser] = useState(false);
-    const [nombre,SetNombre]=useState("");
 
 
     //esta función completa el objeto del request para ser enviado al back
@@ -55,7 +53,7 @@ function Login() {
 
     //captura el evento de lo que se escribe en los input y crea el request
     function _onChange(e) {
-        if (!mensaje == "") {
+        if (!mensaje === "") {
             setMensaje("")
         }
         const { id, value } = e.target;
@@ -81,7 +79,7 @@ function Login() {
                         personal de salud
                     </label>
                 </div>
-                <div class="form-check">
+                <div className="form-check">
                     <input className="form-check-input" type="radio"
                         name="exampleRadios" id="exampleRadios2" value="paciente"
                         onClick={handleSeleccion} />
