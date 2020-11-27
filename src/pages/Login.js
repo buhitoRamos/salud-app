@@ -8,8 +8,9 @@ function Login() {
     const [mensaje, setMensaje] = useState("");
     const [eleccion, setEleccion] = useState("");
     const [request, setRequest] = useState({});
-    const [response, setResponse] = useState({});
+    const [response, setResponse] = useState();
     const [newUser, setNewUser] = useState(false);
+    const [nombre,SetNombre]=useState("");
 
 
     //esta función completa el objeto del request para ser enviado al back
@@ -18,12 +19,12 @@ function Login() {
     }
 
     //Esta función crea un token y lleva a la pagina de food
-    function goToFood() {
+    function goToFood(data) {        
         let token = JSON.stringify("31576533");
         localStorage.setItem('tokenOk', token);
         history.push({
             pathname: '/food',
-            response: response,
+            data: data,
         })
     }
 
@@ -32,9 +33,9 @@ function Login() {
         try {
             const consulta = await axios(
                 { method: 'POST', url: 'http://localhost:8080/usuario/login', data: request }
-            );
-            setResponse(consulta);
-            goToFood();
+            );           
+                                
+            goToFood(consulta.data);
         } catch (error) {
             console.log(error)
             setMensaje("Ingreso un usuario y/o clave invalido")
