@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useHistory } from "react-router-dom";
+import BtnNavegation from "../components/BtnNavegation"
 
 
 function Food(props) {
@@ -8,7 +10,8 @@ function Food(props) {
     const [postreChk, setPostreChk] = useState("hidden")
     const [HiddenPostre, setHiddenPostre] = useState("hidden")
     const [request, setRequest] = useState({})
-    const [saved, setSaved]= useState("")
+    const [saved, setSaved] = useState("")
+    const history = useHistory();
 
 
     useEffect(() => {
@@ -17,42 +20,54 @@ function Food(props) {
         token = JSON.stringify(tk)
         var validaToken = token.includes("31576533")
         setLogued(validaToken)
-        console.log("datos"+datos.id)
-        console.log(request)
     })
 
-    useEffect(() => {      
-        
-        let f = new Date();
-        let fecha = f.getDate() + "-" + (f.getMonth() + 1) + "-" + f.getFullYear() + " / " + f.getHours() + ":" + f.getMinutes();
-        setRequest({ ...request, "fecha_hora": fecha, "user_id": datos.id })
+    useEffect(() => {
+
+        try {
+            let f = new Date();
+            let fecha = f.getDate() + "-" + (f.getMonth() + 1) + "-" + f.getFullYear() + " / " + f.getHours() + ":" + f.getMinutes();
+            setRequest({ ...request, "fecha_hora": fecha, "user_id": datos.id })
+
+        } catch (error) {
+            setLogued(false)
+
+        }
     }, [])
 
     function _selectedFood(e) {
-      
+
         if (e.target.value === "Almuerzo" || e.target.value === "Cena") {
             setPostreChk(false)
         } else {
             setPostreChk("hidden")
         }
     }
-    function _save(e){
+
+    function _save(e) {
         e.preventDefault();
         try {
             consultaAPI();
             setSaved("Guardado")
-            
         } catch (error) {
             console.log(error)
-            
         }
     }
 
+
+    function _salir(e) {
+        const exit = "exit"
+        let token = JSON.stringify(exit)
+        localStorage.setItem('tokenOk', token);
+        history.push('/login')
+        e.preventDefault();
+    }
+
     const consultaAPI = async () => {
-        
-            const consulta = await axios(
-                { method: 'POST', url: 'http://localhost:8080/food/guardar', data: request }
-            );    
+
+        const consulta = await axios(
+            { method: 'POST', url: 'http://localhost:8080/food/guardar', data: request }
+        );
     }
 
     function _onChangePostre(e) {
@@ -60,24 +75,21 @@ function Food(props) {
         const ingirio = "ingirio_postre";
         if (select === "true") {
             setHiddenPostre(false)
-
             setRequest({ ...request, [ingirio]: true })
-
         }
         if (select === "false") {
             setHiddenPostre("hidden")
             setRequest({ ...request, [ingirio]: false })
             setRequest({ ...request, 'postre': '' })
-
         }
     }
-   
+
     function _updateRequest(e) {
         let { id, value } = e.target;
-        if(value==="true"){
-            value=true
-        } if(value==="false"){
-            value=false
+        if (value === "true") {
+            value = true
+        } if (value === "false") {
+            value = false
         }
         setRequest({ ...request, [id]: value })
     }
@@ -87,16 +99,18 @@ function Food(props) {
         return (
             <div>
                 <div className="p-3 mb-2 bg-primary text-white">
-                    <h2 className="float-right">Wellcome {datos.nombre}</h2>
-                    <h2 className="text-center">Cargar Comidas</h2>
+                    <button className="btn btn-danger float-right m-2"
+                        onClick={_salir}
+                    >Salir</button>
+                    <h2 className="float-right">Welcome {datos.nombre}</h2>
+                    <h2 className="text-left">Cargar Comidas</h2>
                 </div>
                 <div className="container">
                     <form>
-
                         <div className="form-group">
                             <label for="tipo_comida">Tipo de comida diaria</label>
                             <select id="tipo_comida" className="form-control"
-                            onClick={_selectedFood}
+                                onClick={_selectedFood}
                                 onChange={_updateRequest}>
                                 <option >Choose...</option>
                                 <option>Desayuno</option>
@@ -122,40 +136,38 @@ function Food(props) {
                                 </div>
                                 <div hidden={HiddenPostre}>
                                     <label for="postre">Postre</label>
-                                    <input id="postre" className="form-control" type="text"onChange={_updateRequest} />
+                                    <input id="postre" className="form-control" type="text" onChange={_updateRequest} />
                                 </div>
                             </div>
                             <div >
                                 <label for="hambre">¿Se quedo con hambre?</label> <br />
                                 <div className="form-check" >
                                     <input className="form-check-input" type="radio" name="hambre" id="hambre"
-                                        onChange={_updateRequest} value={ true} />
+                                        onChange={_updateRequest} value={true} />
                                     <label className="form-check-label" for="noHambre">si</label><br />
                                 </div>
                                 <div className="form-check">
                                     <input className="form-check-input" type="radio" name="hambre" id="hambre"
-                                        value={  false} onClick={_updateRequest} />
+                                        value={false} onClick={_updateRequest} />
                                     <label className="form-check-label" for="noHambre">no</label>
                                 </div>
                             </div>
                         </div>
                         <div className="text-center">
-                        <button className=" btn btn-primary btn-lg"
-                        onClick={_save}>Enviar</button> 
-                        <h3>{saved}</h3>
+                            <button className=" btn btn-primary btn-lg"
+                                onClick={_save}>Enviar</button>
+                            <h3>{saved}</h3>
                         </div>
                     </form>
                 </div>
             </div>
-
-
         )
 
     } else {
         return (
-            <h1>not found</h1>
+            <BtnNavegation
+                url="/login" />
         )
-
     }
 }
 export default Food

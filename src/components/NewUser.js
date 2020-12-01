@@ -35,15 +35,10 @@ function NewUser(props) {
             );
             setResponse(consulta)
             console.log("El status es: "+consulta.status)
-            
-            
         } catch (error) {
             console.log(error)
-            
         }
     }
-
-
 
     if (props.render) {
         return (
@@ -93,9 +88,9 @@ function NewUser(props) {
                     <button className=" btn btn-primary btn-lg"
                     onClick={_handleClick}>Registrar</button>
                     <h4 hidden={saveContact}>Guardado</h4>
+                    <button className="btn btn-secondary btn-lg ml-1">Cerrar</button>
                 </form>
             </div>
-
         )
 
     } else {

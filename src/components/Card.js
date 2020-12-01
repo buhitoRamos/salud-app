@@ -17,10 +17,13 @@ function Card(props) {
 
     return (
         <div className="card Card" >
-            <div className="card-body bg-primary text-white">
+            
+                <div className="card-head bg-primary text-white">
                 <h4>Nombre: {props.nombre} </h4>
                 <h4>Apellido: {props.apellido}</h4>
                 <p>N° Paciente: {props.id}</p>
+                </div>
+                <div className="card-body bg-success text-white">
                 <p>Tipo de comida: {props.tipo}</p>
                 <p>Principal: {props.principal}</p>
                 <p>Comida secundaria:{props.secundaria}</p>
@@ -28,7 +31,8 @@ function Card(props) {
                 <p>Postre: {props.postre}</p>
                 <p>Se quedo con hambre? {Hambre}</p>
                 <p>fecha / hora: {props.fecha}</p>
-            </div>
+                </div>
+           
         </div>
 
     )
