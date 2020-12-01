@@ -8,6 +8,7 @@ function Food(props) {
     const [postreChk, setPostreChk] = useState("hidden")
     const [HiddenPostre, setHiddenPostre] = useState("hidden")
     const [request, setRequest] = useState({})
+    const [saved, setSaved]= useState("")
 
 
     useEffect(() => {
@@ -18,18 +19,15 @@ function Food(props) {
         setLogued(validaToken)
         console.log("datos"+datos.id)
         console.log(request)
-        
-
     })
+
     useEffect(() => {      
         
         let f = new Date();
         let fecha = f.getDate() + "-" + (f.getMonth() + 1) + "-" + f.getFullYear() + " / " + f.getHours() + ":" + f.getMinutes();
         setRequest({ ...request, "fecha_hora": fecha, "user_id": datos.id })
-       
-
-
     }, [])
+
     function _selectedFood(e) {
       
         if (e.target.value === "Almuerzo" || e.target.value === "Cena") {
@@ -37,12 +35,12 @@ function Food(props) {
         } else {
             setPostreChk("hidden")
         }
-
     }
     function _save(e){
         e.preventDefault();
         try {
             consultaAPI();
+            setSaved("Guardado")
             
         } catch (error) {
             console.log(error)
@@ -51,16 +49,10 @@ function Food(props) {
     }
 
     const consultaAPI = async () => {
-        try {
+        
             const consulta = await axios(
                 { method: 'POST', url: 'http://localhost:8080/food/guardar', data: request }
-            );           
-                                
-            
-        } catch (error) {
-            console.log(error)
-            
-        }
+            );    
     }
 
     function _onChangePostre(e) {
@@ -150,6 +142,7 @@ function Food(props) {
                         <div className="text-center">
                         <button className=" btn btn-primary btn-lg"
                         onClick={_save}>Enviar</button> 
+                        <h3>{saved}</h3>
                         </div>
                     </form>
                 </div>

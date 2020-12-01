@@ -26,14 +26,32 @@ function Login() {
         })
     }
 
+    //Esta función crea un token y lleva a la pagina de personal
+    function goToPersonal(data) {    
+        console.log("entra en gotopersonal")   
+        let token = JSON.stringify("31576533");
+        localStorage.setItem('tokenOk', token);
+        history.push({
+            pathname: '/personal',
+            data: data,
+        })
+    }
+
     //verifica si el usuario y clave pertenece a un usuario logueado.
-    const consultaAPI = async () => {
+    const consultaAPI = async (url) => {
         try {
             const consulta = await axios(
-                { method: 'POST', url: 'http://localhost:8080/usuario/login', data: request }
-            );           
+                { method: 'POST', url: url, data: request }
+            );    
+            if(url==='http://localhost:8080/usuario/login'){
+                goToFood(consulta.data);
+
+            }if(url==="http://localhost:8080/personal/login"){
+                goToPersonal(consulta.data)
+            }
+
                                 
-            goToFood(consulta.data);
+            
         } catch (error) {
             console.log(error)
             setMensaje("Ingreso un usuario y/o clave invalido")
@@ -44,10 +62,16 @@ function Login() {
     function _login(e) {
         e.preventDefault();
         if (eleccion === "paciente") {
-            consultaAPI();
+            const url='http://localhost:8080/usuario/login'
+            
+            consultaAPI(url);
         }
         if (eleccion === "") {
             setMensaje("Debe seleccionar una opcion")
+        } if(eleccion==="personal"){
+            const url='http://localhost:8080/personal/login'
+            consultaAPI(url);
+
         }
     }
 
